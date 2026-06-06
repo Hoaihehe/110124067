@@ -1,130 +1,110 @@
+// 1. DỮ LIỆU TẬP TRUNG
+const productList = [
+    { id: "1", name: "Laptop Gaming Victus", price: 21500000, image: "https://placehold.co/400x400?text=Laptop", desc: "Core i5-12450H, RTX 3050, RAM 16GB." },
+    { id: "2", name: "RAM Corsair Vengeance 16GB", price: 1200000, image: "https://placehold.co/400x400?text=RAM", desc: "DDR4 3200MHz cao cấp." },
+    { id: "3", name: "Chuột Logitech G502", price: 1500000, image: "https://placehold.co/400x400?text=Mouse", desc: "Cảm biến HERO 25K siêu nhạy." },
+    { id: "4", name: "Bàn phím cơ Akko 3087", price: 1350000, image: "https://placehold.co/400x400?text=Keyboard", desc: "Cherry Switch, Blue/Orange." }
+];
+
+// 2. KHỞI TẠO GIỎ HÀNG TỪ LOCALSTORAGE
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-// Tự động sửa lỗi dữ liệu cũ nếu bị kẹt dòng trống
-cart = cart.map(item => {
-    if (!item.quantity || isNaN(item.quantity)) item.quantity = 1;
-    return item;
-});
-localStorage.setItem('cart', JSON.stringify(cart));
+// 3. HÀM CẬP NHẬT SỐ LƯỢNG TRÊN MENU
+function updateCartUI() {
+    const cartCountEl = document.getElementById('cart-count');
+    if (cartCountEl) cartCountEl.innerText = cart.length;
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
 
-// 1. Cập nhật số hiển thị trên thanh menu
-function updateCartCount() {
-    const countEl = document.getElementById('cart-count');
-    if (countEl) {
-        countEl.innerText = cart.reduce((total, item) => total + parseInt(item.quantity), 0);
+// 4. XỬ LÝ TRANG DANH SÁCH (san-pham.html)
+function renderProducts() {
+    const listEl = document.getElementById('product-list');
+    if (!listEl) return;
+    listEl.innerHTML = productList.map(p => `
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm h-100">
+                <img src="${p.image}" class="product-img card-img-top" alt="${p.name}">
+                <div class="card-body text-center d-flex flex-column">
+                    <h5 class="card-title fs-6">${p.name}</h5>
+                    <p class="text-danger fw-bold">${p.price.toLocaleString()}đ</p>
+                    <a href="chi-tiet.html?id=${p.id}" class="btn btn-outline-primary btn-sm mt-auto">Chi tiết</a>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 5. XỬ LÝ TRANG CHI TIẾT (chi-tiet.html)
+function renderDetail() {
+    const detailEl = document.getElementById('product-detail');
+    if (!detailEl) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    const product = productList.find(p => p.id === id);
+
+    if (product) {
+        detailEl.innerHTML = `
+            <div class="col-md-6 text-center"><img src="${product.image}" class="img-fluid rounded shadow"></div>
+            <div class="col-md-6">
+                <h1 class="fw-bold">${product.name}</h1>
+                <h2 class="text-danger my-4">${product.price.toLocaleString()} VNĐ</h2>
+                <p class="text-muted">${product.desc}</p>
+                <button class="btn btn-primary btn-lg mt-4" onclick="addToCart('${product.id}')">Thêm vào giỏ hàng</button>
+                <a href="san-pham.html" class="btn btn-link mt-4 d-block">Quay lại shop</a>
+            </div>
+        `;
     }
 }
 
-// 2. Hiển thị thông báo Toast trượt lên
-function showToast(message) {
-    const toast = document.createElement('div');
-    toast.className = 'toast-message';
-    toast.innerText = message;
-    document.body.appendChild(toast);
+// 6. THÊM VÀO GIỎ HÀNG
+window.addToCart = function(id) {
+    const product = productList.find(p => p.id === id);
+    cart.push(product);
+    updateCartUI();
+    alert("Đã thêm " + product.name + " vào giỏ!");
+};
 
-    setTimeout(() => toast.classList.add('show'), 100);
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
-
-// 3. Đổ dữ liệu ra trang giỏ hàng
+// 7. XỬ LÝ TRANG GIỎ HÀNG (gio-hang.html)
 function renderCart() {
-    const cartContent = document.getElementById('cart-content');
-    if (!cartContent) return; 
+    const cartEl = document.getElementById('cart-content');
+    if (!cartEl) return;
 
     if (cart.length === 0) {
-        cartContent.innerHTML = `
-            <div style="text-align:center; padding: 40px;">
-                <h3 style="color:#777; margin-bottom: 20px;">Giỏ hàng của bạn đang trống</h3>
-                <a href="san-pham.html" class="btn-buy" style="text-decoration:none; display:inline-block;">Tiếp tục mua sắm</a>
-            </div>`;
+        cartEl.innerHTML = `<div class="text-center py-5"><h3>Giỏ hàng trống</h3><a href="san-pham.html" class="btn btn-primary">Mua ngay</a></div>`;
         return;
     }
 
-    let html = `<table style="width:100%; border-collapse: collapse; margin-top: 20px;">
-                    <tr style="background:#f8f9fa;">
-                        <th style="padding:15px; border-bottom:1px solid #ddd; text-align:left;">Tên Sản Phẩm</th>
-                        <th style="padding:15px; border-bottom:1px solid #ddd; text-align:left;">Giá</th>
-                        <th style="padding:15px; border-bottom:1px solid #ddd; text-align:left;">Số lượng</th>
-                        <th style="padding:15px; border-bottom:1px solid #ddd; text-align:left;">Thao tác</th>
-                    </tr>`;
+    let total = cart.reduce((sum, item) => sum + item.price, 0);
+    let html = `<table class="table align-middle">
+        <thead><tr><th>Sản phẩm</th><th>Giá</th><th>Thao tác</th></tr></thead>
+        <tbody>`;
     
     cart.forEach((item, index) => {
         html += `<tr>
-                    <td style="padding:15px; border-bottom:1px solid #ddd;"><strong>${item.name}</strong></td>
-                    <td style="padding:15px; border-bottom:1px solid #ddd;">${item.price}</td>
-                    <td style="padding:15px; border-bottom:1px solid #ddd;">${item.quantity}</td>
-                    <td style="padding:15px; border-bottom:1px solid #ddd;"><button style="background:#dc3545; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;" onclick="removeItem(${index})">Xóa</button></td>
-                 </tr>`;
+            <td>${item.name}</td>
+            <td class="text-danger fw-bold">${item.price.toLocaleString()}đ</td>
+            <td><button class="btn btn-sm btn-danger" onclick="removeFromCart(${index})">Xóa</button></td>
+        </tr>`;
     });
 
-    html += `</table>
-             <div style="text-align: right; margin-top: 20px;">
-                <button class="btn-buy" style="padding: 10px 20px;" onclick="alert('Chức năng thanh toán đang phát triển!')">Thanh toán ngay</button>
-             </div>`;
+    html += `</tbody></table>
+        <div class="text-end mt-4"><h4>Tổng cộng: <span class="text-danger">${total.toLocaleString()}đ</span></h4>
+        <button class="btn btn-success btn-lg mt-3" onclick="alert('Cảm ơn bạn đã mua hàng!')">Thanh Toán</button></div>`;
     
-    cartContent.innerHTML = html;
+    cartEl.innerHTML = html;
 }
 
-// 4. Xóa món hàng khỏi giỏ
-window.removeItem = function(index) {
+window.removeFromCart = function(index) {
     cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount();
+    updateCartUI();
     renderCart();
 };
 
-// 5. Thêm món hàng vào giỏ và lưu vào localStorage
-function addToCart(name, price, qty) {
-    const existingItem = cart.find(item => item.name === name);
-    if (existingItem) {
-        existingItem.quantity += qty; 
-    } else {
-        cart.push({ name: name, price: price, quantity: qty }); 
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(cart)); 
-    updateCartCount(); 
-    renderCart(); 
-    showToast(`Đã thêm ${qty} "${name}" vào giỏ hàng!`);
-}
-
-// 6. Lắng nghe toàn bộ sự kiện khi trang web tải xong
+// CHẠY KHI TẢI TRANG
 document.addEventListener('DOMContentLoaded', () => {
-    updateCartCount(); 
-    renderCart(); 
-
-    // SỬA LỖI TẠI ĐÂY: Lắng nghe sự kiện click nút mua một cách an toàn
-    document.querySelectorAll('.btn-buy').forEach(button => {
-        button.addEventListener('click', (e) => {
-            // Kiểm tra xem nút này có nằm trong khung sản phẩm (danh sách hoặc chi tiết) không
-            const container = e.target.closest('.product-card, .product-info');
-            if (!container) return; // Nếu nút bấm ở trang giỏ hàng hoặc form liên hệ thì bỏ qua không xử lý
-
-            const nameEl = container.querySelector('h1, h3');
-            const priceEl = container.querySelector('.price');
-            const qtyInput = container.querySelector('.qty-input');
-
-            if (nameEl && priceEl) {
-                const name = nameEl.innerText.trim();
-                const price = priceEl.innerText.trim();
-                const qty = qtyInput ? parseInt(qtyInput.value) : 1;
-
-                addToCart(name, price, qty);
-            }
-        });
-    });
-
-    // Sự kiện xử lý Form liên hệ
-    const contactForm = document.querySelector('.contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault(); 
-            const name = contactForm.querySelector('input[name="name"]').value;
-            showToast(`Cảm ơn ${name}! Tin nhắn của bạn đã được gửi.`);
-            contactForm.reset(); 
-        });
-    }
+    updateCartUI();
+    renderProducts();
+    renderDetail();
+    renderCart();
 });

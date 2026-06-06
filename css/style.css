@@ -342,3 +342,8 @@ footer {
         gap: 20px;
     }
 }
+/* --- CSS CHO TRANG CHI TIẾT SẢN PHẨM --- */
+/* Mặc định ẩn tất cả các khu vực sản phẩm đi để JS tự bật lên */
+.product-section { 
+    display: none; 
+}
