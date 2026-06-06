@@ -340,7 +340,7 @@ function renderCart() {
 <p class="small text-muted">Bấm vào ảnh để phóng to</p>
                                 
                                 <p class="fw-bold text-danger mb-3">Cần chuyển: ${total.toLocaleString('vi-VN')}đ</p>
-                                <button class="btn btn-success w-100 mt-auto fw-bold" onclick="confirmOrder('QR')">Tôi đã chuyển khoản</button>
+                               
                             </div>
                         </div>
                     </div>
