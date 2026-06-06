@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Sản Phẩm - Cửa Hàng</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body style="background-color: #f4f4f4; display: flex; flex-direction: column; min-height: 100vh;">
+    
+    <header>
+        <div class="logo">
+            <img src="../images/logo.jpg" alt="Logo Cửa Hàng">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Trang chủ</a></li>
+                <li><a href="san-pham.html">Sản phẩm</a></li>
+                <li><a href="gioi-thieu.html">Giới thiệu</a></li>
+                <li><a href="lien-he.html">Liên hệ</a></li>
+                <li><a href="gio-hang.html">Giỏ hàng <span id="cart-count">0</span></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="product-detail-page" style="flex: 1;">
+        <div class="product-top">
+            <div class="product-gallery">
+                <span>Ảnh Sản Phẩm</span>
+            </div>
+            
+            <div class="product-info">
+                <h1>Sản Phẩm A</h1>
+                <p class="price">250.000 VNĐ</p>
+                <p class="status">Tình trạng: <strong style="color: #28a745;">Còn hàng</strong></p>
+                
+                <ul class="short-desc">
+                    <li>Đa nhiệm mượt mà</li>
+                    <li>Tối ưu hiệu năng</li>
+                    <li>Bảo hành 12 tháng</li>
+                </ul>
+
+                <div class="quantity-selector" style="margin-bottom: 20px;">
+                    <label style="font-weight: bold; color: #555;">Số lượng: </label>
+                    <input type="number" class="qty-input" value="1" min="1" max="99" style="width: 70px; padding: 8px; text-align: center; border-radius: 5px; border: 1px solid #ccc; font-size: 1rem;">
+                </div>
+
+                <button class="btn-buy">Thêm Vào Giỏ Hàng</button>
+            </div>
+        </div>
+
+        <div class="product-bottom">
+            <h2>Thông số kỹ thuật</h2>
+            <table class="specs-table">
+                <tr>
+                    <td>Thương hiệu</td>
+                    <td>Hãng A</td>
+                </tr>
+                <tr>
+                    <td>Khối lượng</td>
+                    <td>500g</td>
+                </tr>
+            </table>
+
+            <h2>Chi tiết sản phẩm</h2>
+            <div class="long-desc">
+                <p>Mô tả chi tiết về sản phẩm của bạn tại đây...</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Cửa Hàng Của Bạn. Mọi quyền được bảo lưu.</p>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>
