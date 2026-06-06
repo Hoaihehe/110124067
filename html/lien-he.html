@@ -2,66 +2,33 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liên Hệ - Cửa Hàng</title>
+    <title>Liên Hệ - TechStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
-    <style>
-        /* CSS nội bộ thêm cho form liên hệ */
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        .contact-form input, .contact-form textarea {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 100%;
-        }
-        .contact-form textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-    </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="../assets/logo.jpg" alt="Logo Cửa Hàng">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="../index.html">TECH-STORE</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../index.html">Trang chủ</a>
+                <a class="nav-link" href="san-pham.html">Sản phẩm</a>
+                <a class="nav-link" href="gioi-thieu.html">Giới thiệu</a>
+                <a class="nav-link active" href="lien-he.html">Liên hệ</a>
+            </div>
         </div>
-       <nav>
-    <ul>
-        <li><a href="../index.html">Trang chủ</a></li>
-        <li><a href="san-pham.html">Sản phẩm</a></li>
-        <li><a href="gioi-thieu.html">Giới thiệu</a></li>
-        <li><a href="lien-he.html">Liên hệ</a></li>
-        <li><a href="gio-hang.html">Giỏ hàng <span id="cart-count">0</span></a></li>
-    </ul>
-</nav>
+    </nav>
 
-<script src="../js/script.js"></script>
-    </header>
-
-    <main>
-        <section class="products-container" style="background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-            <h2>Liên Hệ Với Chúng Tôi</h2>
-            <p style="text-align: center; margin-bottom: 20px;">Hãy để lại lời nhắn, chúng tôi sẽ phản hồi bạn sớm nhất có thể!</p>
-            
-            <form class="contact-form" action="#" method="POST">
-                <input type="text" name="name" placeholder="Họ và tên của bạn" required>
-                <input type="email" name="email" placeholder="Email của bạn" required>
-                <textarea name="message" placeholder="Nội dung tin nhắn..." required></textarea>
-                <button type="submit" class="btn-buy">Gửi Tin Nhắn</button>
-            </form>
-        </section>
+    <main class="container mt-5">
+        <h2 class="text-center">Liên Hệ</h2>
+        <form class="contact-form" action="https://formspree.io/f/xdavavba" method="POST">
+            <input type="text" name="name" class="form-control mb-3" placeholder="Tên" required>
+            <input type="email" name="email" class="form-control mb-3" placeholder="Email" required>
+            <textarea name="message" class="form-control mb-3" rows="5" placeholder="Nội dung" required></textarea>
+            <button type="submit" class="btn btn-primary">Gửi Tin Nhắn</button>
+        </form>
     </main>
-<nav>
- 
-</nav>
-    <footer>
-        <p>&copy; 2026 Cửa Hàng Của Bạn. Mọi quyền được bảo lưu.</p>
-    </footer>
+
+    <script src="../js/script.js"></script>
 </body>
 </html>
